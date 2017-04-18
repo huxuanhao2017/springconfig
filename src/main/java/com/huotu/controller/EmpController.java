@@ -4,8 +4,8 @@ import com.huotu.entity.Emp;
 import com.huotu.service.EmpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Created by huxuanhao on 2017-04-14.
@@ -21,9 +21,8 @@ public class EmpController {
      * @return
      */
     @RequestMapping("/add")
-    public ModelAndView addEmp() {
-        ModelAndView m = new ModelAndView("/addEmp");
-        return m;
+    public String addEmp() {
+        return "addEmp";
     }
 
     /**
@@ -49,14 +48,14 @@ public class EmpController {
     }
 
     /**
-     * 显示所有员工信息
+     *
+     * @param model
      * @return
      */
     @RequestMapping("/login")
-    public ModelAndView login(){
-        ModelAndView m = new ModelAndView("/show");
-        m.addObject("emps",empService.findAll());
-        return m;
+    public String login(Model model){
+        model.addAttribute("emps",empService.findAll());
+        return "show";
     }
 
     /**
@@ -65,12 +64,10 @@ public class EmpController {
      * @return
      */
     @RequestMapping("/update")
-    public ModelAndView update(Integer id){
-        ModelAndView m = new ModelAndView("/update");
-        m.addObject("emp",empService.getEmp(id));
-        return m;
+    public String update(Integer id, Model model){
+        model.addAttribute("emp",empService.getEmp(id));
+        return "update";
     }
-
     /**
      * 修改员工信息
      * @param emp
@@ -78,19 +75,20 @@ public class EmpController {
      */
     @RequestMapping("/modify")
     public String modify(Emp emp,Integer departmentId){
-      empService.addEmp(emp,departmentId);
+        empService.addEmp(emp,departmentId);
         return "redirect:/emp/login";
     }
 
     /**
-     * 根据姓名查询员工
+     *
      * @param name
+     * @param model
      * @return
      */
     @RequestMapping("/select")
-    public ModelAndView select(String name){
-        ModelAndView m = new ModelAndView("/show");
-        m.addObject("emps",empService.findByName(name));
-        return m;
+    public String select(String name,Model model){
+        model.addAttribute("emps",empService.findByName(name));
+        System.out.print("===");
+        return "show";
     }
 }
