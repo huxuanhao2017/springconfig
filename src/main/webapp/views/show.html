@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+    <title th:text="springdatamvc">Title</title>
+    <script src="../resources/js/jquery.min.js" th:src="@{/resources/js/jquery.min.js}"></script>
+    <script>
+        function valid(){
+            var name = $("#name").val();
+            console.log(name);
+
+            if(name==""){
+                window.location.href = "/emp/login";
+                return false;
+            }else{
+                return true;
+            }
+        }
+    </script>
+</head>
+<body>
+<h1>员工列表</h1>
+<a href="/emp/add">添加</a><br/>
+<form action="/emp/select">查询员工名字<input name="name" id="name"/><input type ="submit" value ="确认" onclick ="return valid();"/></form>
+<table border="1" style="width:100%;border-collapse:collapse;">
+    <thead>
+    <tr><th>id</th><th>姓名</th><th>电话</th><th>部门名称</th><th>操作</th></tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="emp : ${emps}">
+        <td th:text="${emp.id}"></td>
+        <td th:text="${emp.name}"></td>
+        <td th:text="${emp.phone}"></td>
+        <td th:text="${emp.department.dapartmentName}"></td>
+        <td><a th:href="@{/emp/del?id=__${emp.id}__}">删除</a>
+            <a th:href="@{/emp/update?id=__${emp.id}__}">更新</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
